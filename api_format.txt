@@ -1,0 +1,462 @@
+﻿
+
+
+
+
+--募資電影細節頁
+  URL: https://<baseApiUrl>/api/movie/readOne.php?id=<id_movie>&cf=true
+  HTTP Verb: GET
+  JSON Response Format:
+  [
+    {
+      "id": "75",
+      "name_zhtw": "羊男的迷宮",
+      "name_en": "Pan's Labyrinth",
+      "country": "墨西哥",
+      "release_year": "2006",
+      "running_time": "118",
+      "rating": "保護級",
+      "synopsis": "12岁女孩子奥菲丽娅...",
+      "award": "本片在2007年1月被提...",
+      "trailer": "https://youtu.be/A49_0yzI70Y",
+      "director": [
+              {
+                "id_director": "68",
+                "director_name_zhtw": "吉勒摩·戴托羅",
+                "director_name_en": "Guillermo del Toro",
+                "director_description": ""
+              }
+        ],
+      "cast": [
+              {
+                "id_cast": "48",
+                "cast_name_zhtw": "道格·瓊斯",
+                "cast_name_en": "Doug Jones",
+                "cast_description": ""
+              },
+              {
+                "id_cast": "74",
+                "cast_name_zhtw": "伊凡娜·巴吉羅",
+                "cast_name_en": "Ivana Baquero",
+                "cast_description": ""
+              }
+        ]
+      }
+  ]
+
+--確映電影細節頁
+  URL: https://<baseApiUrl>/api/movie/readOne.php?id=<id_movie>
+  HTTP Verb: GET
+  JSON Response Format:
+  [
+    {
+    "id": "6",
+    "name_zhtw": "第凡內早餐",
+    "name_en": "Breakfast at Tiffany's",
+    "country": "美國",
+    "release_year": "1961",
+    "running_time": "115",
+    "rating": "保護級",
+    "synopsis": "改編自楚門卡波特的暢銷小說，奧黛麗赫...",
+    "award": "《第凡内的早餐》被影評界譽為「60年代美...",
+    "trailer": "https://www.youtube.com/watch?v=hQ_O15kYlCI",
+    "id_session": "22",
+    "date": "2018-07-07",
+    "day": "Sat",
+    "time": "10:00:00",
+    "auditorium": "誠品電影院",
+    "director": [
+        {
+          "id_director": "6",
+          "director_name_zhtw": "萊克·愛德華",
+          "director_name_en": "Blake Edwards",
+          "director_description": "布萊克·愛德華（Blake Edwards，1922 - 2010），為美國著名導演、劇作家、製片。最著名的作品有《第凡內早餐》、《相見時難別亦難》（Days of Wine and Roses）、卡通《頑皮豹》（Pink Panther）。於2004年獲得奧斯卡終身成就獎。"
+        }
+      ],
+    "cast": [
+        {
+          "id_cast": "21",
+          "cast_name_zhtw": "奧黛麗·赫本",
+          "cast_name_en": "Audrey Hepburn",
+          "cast_description": "奧黛麗·赫本（Audrey Hepburn 1929－1993），出生於比利時布魯塞爾，活躍於1950和1960年代的美國影壇，最具代表的作品有《羅馬假期》、《第凡内早餐》和《窈窕淑女》等。1999年被美國電影學會選為百年來最偉大的女演員第3名。"
+        },
+        {
+          "id_cast": "61",
+          "cast_name_zhtw": "喬治·比柏",
+          "cast_name_en": "George Peppard",
+          "cast_description": "喬治·比柏（George Peppard, Jr.，1928－1994）為美國演員。他的代表作是在《第凡內早餐》中飾演男主角保羅，以及NBC電視劇《神秘之夜》中的Banacek，和NBC電視劇《天龍特攻隊》中的約翰·史密斯（漢尼拔）一角。"
+        },
+        {
+          "id_cast": "129",
+          "cast_name_zhtw": "帕翠夏·尼爾",
+          "cast_name_en": "Patricia Neal",
+          "cast_description": "帕翠夏·尼爾（Patricia Neal，1926－2010），美國女演員，曾以電影《原野鐵漢》獲得奧斯卡最佳女主角獎。《原野鐵漢》，《海上長城》獲得英國電影學院獎。"
+        }
+      ]
+    }
+  ]
+
+--募資電影列表
+  URL: https://<baseApiUrl>/api/movie/read.php?cf=true
+  HTTP Verb: GET
+  JSON Response Format:
+  [
+    {
+      "id_movie": "1",
+      "name_zhtw": "驚魂記",
+      "name_en": "Psycho",
+      "release_year": "1960",
+      "director_name": "亞佛烈德·希區考克"
+    },
+    {
+      "id_movie": "2",
+      "name_zhtw": "畢業生",
+      "name_en": "The Graduate",
+      "release_year": "1967",
+      "director_name": "麥克·尼可斯"
+    },
+    {
+      "id_movie": "3",
+      "name_zhtw": "我倆沒有明天",
+      "name_en": "Bonnie and Clyde",
+      "release_year": "1967",
+      "director_name": "亞瑟‧潘"
+    },
+    ...
+  ]
+
+--確映電影列表
+  URL: https://<baseApiUrl>/api/movie/read.php?cf=false
+  HTTP Verb: GET
+  JSON Response Format:
+  [
+    {
+      "id_movie": "1",
+      "name_zhtw": "驚魂記",
+      "name_en": "Psycho",
+      "release_year": "1960",
+      "director_name": "亞佛烈德·希區考克"
+    },
+    {
+      "id_movie": "2",
+      "name_zhtw": "畢業生",
+      "name_en": "The Graduate",
+      "release_year": "1967",
+      "director_name": "麥克·尼可斯"
+    },
+    {
+      "id_movie": "3",
+      "name_zhtw": "我倆沒有明天",
+      "name_en": "Bonnie and Clyde",
+      "release_year": "1967",
+      "director_name": "亞瑟‧潘"
+    },
+    ...
+  ]
+
+--會員註冊
+  URL: https://<baseApiUrl>/api/members/signup.php
+  HTTP Verb: POST
+  POST data Format:
+    [
+      {
+        "username": "tcff_test",
+        "email": "tcff_test@gmail.com",
+        "password": "123456789"
+      }
+    ]
+  JSON Response Format:
+    1.註冊成功
+      [
+        {
+          "success": "true",
+        }
+      ]
+    2.格式錯誤(email)
+      [
+        {
+          "success": "false",
+          "messege": "email wrong format",
+        }
+      ]
+    3.格式錯誤(username)
+      [
+        {
+          "success": "false",
+          "messege": "username wrong format",
+        }
+      ]
+    4.格式錯誤(password)
+      [
+        {
+          "success": "false",
+          "messege": "password wrong format",
+        }
+      ]
+    5.email已被使用
+      [
+        {
+          "success": "false",
+          "messege": "email used",
+        }
+      ]
+    6.沒有給email
+      [
+        {
+          "success": "false",
+          "messege": "no email",
+        }
+      ]
+
+
+--會員登入
+  URL: https://<baseApiUrl>/api/members/login.php
+  HTTP Verb: POST
+  POST data Format:
+    [
+      {
+        "email": "tcff_test@gmail.com",
+        "password": "123456789"
+      }
+    ]
+
+  JSON Response Format:
+    1.登入成功
+      [
+        {
+          "success": "true",
+          "username": "Test"
+        }
+      ]
+    2.帳號密碼錯誤
+      [
+        {
+          "success": "false"
+        }
+      ]
+
+--會員登出
+  URL: https://<baseApiUrl>/api/members/logout.php
+  HTTP Verb: GET
+
+--會員資料(修改)
+  URL: https://<baseApiUrl>/api/members/update.php
+
+  -表格秀出會員資料
+    HTTP Verb: GET
+    JSON Response Format:
+    [
+      {
+          "username": "tcff_test",
+          "email": "tcff_test@gmail.com"
+      }
+    ]
+
+  -送出修改資料
+    HTTP Verb: POST
+    POST data Format:
+      [
+        {
+          "username": "tcff_test",
+          "password": "123456789"
+        }
+      ]
+
+    JSON Response Format:
+      1.密碼錯誤
+      [
+        {
+          "messege": "wrongPass",
+        }
+      ]
+
+      2.沒有改變
+      [
+        {
+          "messege": "not change",
+        }
+      ]
+
+      3.成功修改(表格秀出修改過的會員資料)
+      [
+        {
+          "messege": "success",
+          "user": 
+          {
+            "username": "tcff_test",
+            "email": "tcff_test@gmail.com"
+          }
+        }
+      ]
+
+
+(X)--查詢訂票紀錄
+URL: https://<baseApiUrl>/api/members/order_history.php
+HTTP Verb: GET
+JSON Response Format:
+[  
+  {
+    "order_date": "2018-07-01 10:01",
+    "amount": "520",
+    "order_detail": [
+      {
+        "id_movie": "68",
+        "quantity": "2",
+        "seat": "H7&H8",
+      },
+    ]
+  },
+  {
+    "order_date": "2018-05-22 19:05",
+    "amount": "1787",
+    "order_detail": [
+      {
+        "id_movie": "21",
+        "quantity": "3",
+        "seat": "H7&H8&H9",
+      },
+      {
+        "id_movie": "17",
+        "quantity": "2",
+        "seat": "I3&I4",
+      },
+      {
+        "id_movie": "50",
+        "quantity": "5",
+        "seat": "K11&K12",
+      }
+    ]
+  },
+  {
+    "order_date": "2018-05-13 12:35",
+    "amount": "3333",
+    "order_detail": [
+      {
+        "id_movie": "22",
+        "quantity": "10",
+        "seat": "H7&H8&H9&I7&I8&I9&K7&K8&K9&K10",
+      },
+    ]
+  },
+]
+
+(X)--我的片單
+URL: https://<baseApiUrl>/api/cart/collection.php
+HTTP Verb: GET
+JSON Response Format:
+[
+  {
+    "id_movie": "1",
+    "name_zhtw": "驚魂記",
+    "name_en": "Psycho",
+    "release_year": "1960",
+    "director_name": "亞佛烈德·希區考克",
+    "collect_date": "2018-04-02 17:00"
+  },
+  {
+    "id_movie": "2",
+    "name_zhtw": "畢業生",
+    "name_en": "The Graduate",
+    "release_year": "1967",
+    "director_name": "麥克·尼可斯"
+    "collect_date": "2018-04-02 17:00"
+  },
+  {
+    "id_movie": "3",
+    "name_zhtw": "我倆沒有明天",
+    "name_en": "Bonnie and Clyde",
+    "release_year": "1967",
+    "director_name": "亞瑟‧潘"
+    "collect_date": "2018-04-01 15:00"
+  },
+  ...
+]
+
+(X)--劃位
+URL: https://<baseApiUrl>/api/members/booking.php
+HTTP Verb: POST
+POST data Format:
+[  
+  {
+    "id_movie": "21",
+    "id_session": "1",
+    "quantity": "3",
+    "seat": "H7&H8&H9",
+  },
+]
+JSON Response Format:
+[
+  {
+    "messege": "座位已保留",
+  }
+]
+
+
+(X)--結帳
+URL: https://<baseApiUrl>/api/cart/booking.php
+HTTP Verb: POST
+POST data Format:
+[  
+  {
+    "id_movie": "21",
+    "id_session": "1",
+    "quantity": "3",
+    "seat": "H7&H8&H9",
+  },
+  {
+    "id_movie": "2",
+    "id_session": "3",
+    "quantity": "2",
+    "seat": "H7&H8",
+  },
+  {
+    "id_movie": "33",
+    "id_session": "10",
+    "quantity": "3",
+    "seat": "H7&H8&H9",
+  },
+]
+JSON Response Format:
+[
+  {
+    "messege": "感謝您的訂購",
+  }
+]
+
+--場次表
+URL: https://<baseApiUrl>/api/movie/session.php
+HTTP Verb: GET
+JSON Response Format:
+[
+  {
+    "id_session": "1",
+    "date": "2018-07-01",
+    "day": "Sun",
+    "time": "10:00:00",
+    "auditorium": "台北光點",
+    "id_movie": "1",
+    "name_zhtw": "驚魂記",
+    "running_time": "109"
+  },
+  {
+    "id_session": "2",
+    "date": "2018-07-01",
+    "day": "Sun",
+    "time": "10:00:00",
+    "auditorium": "誠品電影院",
+    "id_movie": "3",
+    "name_zhtw": "我倆沒有明天",
+    "running_time": "111"
+  },
+  {
+    "id_session": "3",
+    "date": "2018-07-01",
+    "day": "Sun",
+    "time": "12:30:00",
+    "auditorium": "台北光點",
+    "id_movie": "16",
+    "name_zhtw": "教父",
+    "running_time": "175"
+  },
+]
+

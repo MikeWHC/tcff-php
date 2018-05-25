@@ -1,0 +1,19 @@
+¢uapi/
+¢u¢w¢w¢w config/
+¢u¢w¢w¢w¢w¢w¢w core.php - file used for core configuration
+¢u¢w¢w¢w¢w¢w¢w database.php - file used for connecting to the database.
+¢u¢w¢w¢w objects/
+¢u¢w¢w¢w¢w¢w¢w product.php - contains properties and methods for "product" database queries.
+¢u¢w¢w¢w¢w¢w¢w category.php - contains properties and methods for "category" database queries.
+¢u¢w¢w¢w product/
+¢u¢w¢w¢w¢w¢w¢w create.php - file that will accept posted product data to be saved to database.
+¢u¢w¢w¢w¢w¢w¢w delete.php - file that will accept a product ID to delete a database record.
+¢u¢w¢w¢w¢w¢w¢w read.php - file that will output JSON data based from "products" database records.
+¢u¢w¢w¢w¢w¢w¢w read_paging.php - file that will output "products" JSON data with pagination.
+¢u¢w¢w¢w¢w¢w¢w read_one.php - file that will accept product ID to read a record from the database.
+¢u¢w¢w¢w¢w¢w¢w update.php - file that will accept a product ID to update a database record.
+¢u¢w¢w¢w¢w¢w¢w search.php - file that will accept keywords parameter to search "products" database.
+¢u¢w¢w¢w category/
+¢u¢w¢w¢w¢w¢w¢w read.php - file that will output JSON data based from "categories" database records.
+¢u¢w¢w¢w shared/
+¢u¢w¢w¢w¢w¢w¢w utilities.php - file that will return pagination array.
