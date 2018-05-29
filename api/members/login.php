@@ -13,16 +13,20 @@ $db = $database->getConnection();
 // initialize object
 $members = new Members($db);
 
-if(! isset($_SESSION)){
-    session_start();
+if(isset($_POST['email'])){
+    if(! isset($_SESSION)){
+        session_start();
+    }
+
+    $success = $members->login($_POST['email'], $_POST['password']);
+
+    $result = array("success" => $success);
+
+    if(isset($_SESSION['user'])){
+        $result["username"] = $_SESSION['user']['username'];
+    }
+
+    echo json_encode($result);
+}else{
+    echo "please post data";
 }
-
-$success = $members->login($_POST['email'], $_POST['password']);
-
-$result = array("success" => $success);
-
-if(isset($_SESSION['user'])){
-    $result["username"] = $_SESSION['user']['username'];
-}
-
-echo json_encode($result);

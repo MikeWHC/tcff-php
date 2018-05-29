@@ -5,7 +5,7 @@ header("Content-Type: application/json; charset=UTF-8");
  
 // include database and object files
 include_once '../config/database.php';
-include_once '../pages/cast.php';
+include_once '../pages/cart.php';
 
 // instantiate database and product object
 $database = new Database();
@@ -18,10 +18,13 @@ if(! isset($_SESSION)){
     session_start();
 }
 
-$rs = $cast->collection();
+$result = $cart->collection();
 
-$result = $rs->fetch_all(MYSQLI_ASSOC);
+// $result = $rs->fetch_all(MYSQLI_ASSOC);
 
 echo json_encode($result);
+// echo parse_str($result);
+// echo var_dump($result);
+// echo $result;
 
 ?>

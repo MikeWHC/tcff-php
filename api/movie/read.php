@@ -50,6 +50,7 @@ $rs = $movie->read();
     }
  
     echo json_encode($movie_list_arr);
+    // echo count($movie_list_arr); //75
 // }
  
 // else{

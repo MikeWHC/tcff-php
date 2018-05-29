@@ -291,137 +291,196 @@
 
 
 (X)--查詢訂票紀錄
-URL: https://<baseApiUrl>/api/members/order_history.php
-HTTP Verb: GET
-JSON Response Format:
-[  
+  URL: https://<baseApiUrl>/api/members/orders.php
+  HTTP Verb: GET
+  JSON Response Format:
   {
-    "order_date": "2018-07-01 10:01",
-    "amount": "520",
-    "order_detail": [
-      {
-        "id_movie": "68",
-        "quantity": "2",
-        "seat": "H7&H8",
-      },
-    ]
-  },
-  {
-    "order_date": "2018-05-22 19:05",
-    "amount": "1787",
-    "order_detail": [
-      {
-        "id_movie": "21",
-        "quantity": "3",
-        "seat": "H7&H8&H9",
-      },
-      {
-        "id_movie": "17",
-        "quantity": "2",
-        "seat": "I3&I4",
-      },
-      {
-        "id_movie": "50",
-        "quantity": "5",
-        "seat": "K11&K12",
-      }
-    ]
-  },
-  {
-    "order_date": "2018-05-13 12:35",
-    "amount": "3333",
-    "order_detail": [
-      {
-        "id_movie": "22",
-        "quantity": "10",
-        "seat": "H7&H8&H9&I7&I8&I9&K7&K8&K9&K10",
-      },
-    ]
-  },
-]
+    "not_expired": [
 
-(X)--我的片單
-URL: https://<baseApiUrl>/api/cart/collection.php
-HTTP Verb: GET
-JSON Response Format:
-[
-  {
-    "id_movie": "1",
-    "name_zhtw": "驚魂記",
-    "name_en": "Psycho",
-    "release_year": "1960",
-    "director_name": "亞佛烈德·希區考克",
-    "collect_date": "2018-04-02 17:00"
-  },
-  {
-    "id_movie": "2",
-    "name_zhtw": "畢業生",
-    "name_en": "The Graduate",
-    "release_year": "1967",
-    "director_name": "麥克·尼可斯"
-    "collect_date": "2018-04-02 17:00"
-  },
-  {
-    "id_movie": "3",
-    "name_zhtw": "我倆沒有明天",
-    "name_en": "Bonnie and Clyde",
-    "release_year": "1967",
-    "director_name": "亞瑟‧潘"
-    "collect_date": "2018-04-01 15:00"
-  },
-  ...
-]
-
-(X)--劃位
-URL: https://<baseApiUrl>/api/members/booking.php
-HTTP Verb: POST
-POST data Format:
-[  
-  {
-    "id_movie": "21",
-    "id_session": "1",
-    "quantity": "3",
-    "seat": "H7&H8&H9",
-  },
-]
-JSON Response Format:
-[
-  {
-    "messege": "座位已保留",
+    ],
+    "expired": [
+      {
+        "order_date": "2018-07-01 10:01",
+        "id_movie": "10",
+        "tickets": "3"
+      },
+      {
+        "order_date": "2018-05-22 19:05",
+        "id_movie": "6",
+        "tickets": "2"
+      },
+    ]
   }
-]
+  [  
+    {
+      "order_date": "2018-07-01 10:01",
+      "amount": "520",
+      "order_detail": [
+        {
+          "id_movie": "68",
+          "quantity": "2",
+          "seat": "H7&H8",
+        },
+      ]
+    },
+    {
+      "order_date": "2018-05-22 19:05",
+      "amount": "1787",
+      "order_detail": [
+        {
+          "id_movie": "21",
+          "quantity": "3",
+          "seat": "H7&H8&H9",
+        },
+        {
+          "id_movie": "17",
+          "quantity": "2",
+          "seat": "I3&I4",
+        },
+        {
+          "id_movie": "50",
+          "quantity": "5",
+          "seat": "K11&K12",
+        }
+      ]
+    },
+    {
+      "order_date": "2018-05-13 12:35",
+      "amount": "3333",
+      "order_detail": [
+        {
+          "id_movie": "22",
+          "quantity": "10",
+          "seat": "H7&H8&H9&I7&I8&I9&K7&K8&K9&K10",
+        },
+      ]
+    },
+  ]
+
+--我的片單
+  -顯示全部收藏
+    URL: https://<baseApiUrl>/api/cart/collection.php
+    HTTP Verb: GET
+    JSON Response Format:
+      [
+        {
+          "id_movie": "1",
+          "name_zhtw": "驚魂記",
+          "name_en": "Psycho",
+          "release_year": "1960",
+        },
+        {
+          "id_movie": "2",
+          "name_zhtw": "畢業生",
+          "name_en": "The Graduate",
+          "release_year": "1967",
+        },
+        {
+          "id_movie": "3",
+          "name_zhtw": "我倆沒有明天",
+          "name_en": "Bonnie and Clyde",
+          "release_year": "1967",
+        },
+        ...
+      ]
+    -新增收藏
+      URL: https://<baseApiUrl>/api/cart/collection.php/{id_movie}
+      example URL: https://<baseApiUrl>/api/cart/collection.php/33
+      HTTP Verb: POST
+      JSON Response Format:
+        1.新增成功
+        [
+          {
+            "messege": "add 1 collection",
+          }
+        ]
+
+        2.已經在片單中
+        [
+          {
+            "messege": "already in your collection",
+          }
+        ]
+        3.未知錯誤
+        [
+          {
+            "messege": "something wrong",
+          }
+        ]
+    -刪除收藏
+      URL: https://<baseApiUrl>/api/cart/collection.php/{id_movie}
+      example URL: https://<baseApiUrl>/api/cart/collection.php/33
+      HTTP Verb: DELETE
+      JSON Response Format:
+        1.刪除成功
+        [
+          {
+            "messege": "delete 1 data",
+          }
+        ]
+        2.未知錯誤
+        [
+          {
+            "messege": "something wrong",
+          }
+        ]
 
 
-(X)--結帳
-URL: https://<baseApiUrl>/api/cart/booking.php
-HTTP Verb: POST
-POST data Format:
-[  
-  {
-    "id_movie": "21",
-    "id_session": "1",
-    "quantity": "3",
-    "seat": "H7&H8&H9",
-  },
-  {
-    "id_movie": "2",
-    "id_session": "3",
-    "quantity": "2",
-    "seat": "H7&H8",
-  },
-  {
-    "id_movie": "33",
-    "id_session": "10",
-    "quantity": "3",
-    "seat": "H7&H8&H9",
-  },
-]
-JSON Response Format:
-[
-  {
-    "messege": "感謝您的訂購",
-  }
-]
+--劃位
+  URL: https://<baseApiUrl>/api/cart/booking.php/{id_session}
+  HTTP Verb: GET
+  JSON Response Format:
+  [
+    {
+      "occupied_seats_num": [
+        "3",
+        "6",
+        "7",
+        "8",
+        "9",
+        "10",
+        "11",
+        "15",
+        "40",
+        "41",
+        "42",
+        "43",
+        "44"
+      ],
+      "occupied_seats_count": 13,
+      "bookable_seats_count": 157
+    }
+  ]
+
+
+--結帳
+  URL: https://<baseApiUrl>/api/cart/booking.php/{id_session}
+  HTTP Verb: POST
+  POST data Format:
+    [  
+      {
+        "seat": "{seat1}_{seat2}_{seat3}...",
+      },
+    ]
+  JSON Response Format:
+    1.成功購買
+      [
+        {
+          "messege": "booking success",
+        }
+      ]
+    2.座位已被訂走(只顯示第一個符合結果)
+      [
+        {
+          "messege": "seat {seat number} occupied",
+        }
+      ]
+    3.未知錯誤
+      [
+        {
+          "messege": "something wrong",
+        }
+      ]
 
 --場次表
 URL: https://<baseApiUrl>/api/movie/session.php

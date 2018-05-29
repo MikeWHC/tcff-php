@@ -28,7 +28,8 @@ class Movie{
             INNER JOIN (movie_director md
                 INNER JOIN director d
                 ON md.id_director = d.id
-            ) ON md.id_movie = m.id";
+            ) ON md.id_movie = m.id
+            ORDER BY id_movie";
 
         // echo $sql;
     
