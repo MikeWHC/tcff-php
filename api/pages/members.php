@@ -100,7 +100,7 @@ class Members{
     }
 
     public function orders(){ 
-        $sql = sprintf("SELECT id_session, seat, order_date FROM `orders` o WHERE `id_member`=%s ORDER BY order_date DESC",
+        $sql = sprintf("SELECT id_session, seat, order_date FROM `orders` o WHERE `id_member`=%s ORDER BY order_date DESC, id_session ASC",
             $_SESSION['user']['id']
             );
 
