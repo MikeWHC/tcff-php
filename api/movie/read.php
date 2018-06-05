@@ -19,6 +19,7 @@ $movie = new Movie($db);
 // $num = $stmt->rowCount();
 
 $rs = $movie->read();
+// echo $rs;
 
 // echo json_encode($datas);
 // check if more than 0 record found

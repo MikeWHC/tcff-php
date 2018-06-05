@@ -22,13 +22,20 @@ class Movie{
     
     // read movie list
     public function read(){ 
+        // return $_SERVER['PATH_INFO'];
+        // return $_GET['cf'];
+        // if($_GET['cf']):
+        if(!empty($_GET['cf'])) $cf = $_GET['cf']=="true" ? 1 : 0;
+        $whereStr = empty($_GET['cf']) ? 1 : "`cf`=$cf";
+        // return $cf;
         // select all query
-        $sql = "SELECT m.id AS id_movie, m.name_zhtw, m.name_en, m.release_year, d.name_zhtw AS director_name
+        $sql = "SELECT m.id AS id_movie, m.name_zhtw, m.name_en, m.release_year, m.theme, d.name_zhtw AS director_name
             FROM movie m
             INNER JOIN (movie_director md
                 INNER JOIN director d
                 ON md.id_director = d.id
             ) ON md.id_movie = m.id
+            WHERE $whereStr
             ORDER BY id_movie";
 
         // echo $sql;
@@ -126,6 +133,28 @@ class Movie{
         
         
         return $rs;
+    }
+    public function cfRead(){
+        $sql = "SELECT o.id_movie, o.quantity
+                FROM `orders` o
+                WHERE `cf`=1";
+        $rs = $this->conn->query($sql);
+        $goal = ceil(108 * 0.7);
+        $datas = $rs->fetch_all(MYSQLI_ASSOC);
+        // return $datas;
+        $result = [];
+        foreach ($datas as $key => $value) {
+            $result[$value['id_movie']] = isset($result[$value['id_movie']]) ? $result[$value['id_movie']] : 0;
+            $result[$value['id_movie']] += $value['quantity'];
+        }
+        foreach ($result as $key => &$value) {
+            $value = round(($value / $goal), 2);
+        }
+        return $result;
+
+    }
+    public function cfReadOne(){
+        
     }
 
 }

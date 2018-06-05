@@ -2,6 +2,24 @@
 
 
 
+--查看募資進度
+  URL: https://<baseApiUrl>/api/movie/cfRead.php
+  HTTP Verb: GET
+  JSON Response Format:
+  {
+    <id_movie> : 0.26(進度),
+    <id_movie> : 0.12,
+    <id_movie> : 0.04
+    ...
+  }
+  {    
+    15:  0.26,
+    14:  0.12,
+    13:  0.04,
+    71:  0.03,
+    74:  0.03,
+    75:  0.03
+  }
 
 --募資電影細節頁
   URL: https://<baseApiUrl>/api/movie/readOne.php?id=<id_movie>&cf=true
@@ -454,14 +472,68 @@
 
 
 --結帳
-  URL: https://<baseApiUrl>/api/cart/booking.php/{id_session}
+  URL: https://<baseApiUrl>/api/cart/booking.php
   HTTP Verb: POST
   POST data Format:
-    [  
-      {
-        "seat": "{seat1}_{seat2}_{seat3}...",
-      },
-    ]
+    {
+    "films":[
+        {
+            "session":1,
+            "seats":[
+                "10",
+                "11",
+                "3",
+                "9"
+            ],
+            "quantity": 4
+        },
+        {
+            "session": 2,
+            "seats": [
+                "1",
+                "2",
+                "3"
+            ],
+            "quantity": 3
+        },
+        {
+            "session": 3,
+            "seats": [
+                "1",
+                "2",
+                "3",
+                "30",
+                "31"
+            ],
+            "quantity": 5
+        },
+        {
+            "session": 4,
+            "seats": [
+                "1",
+                "2",
+                "3",
+                "7"
+            ],
+            "quantity": 4
+        },
+        {
+            "session": 7,
+            "seats": [
+                "1",
+                "2",
+                "3"
+            ],
+            "quantity": 3
+        }
+    ],
+    "cffilms":[
+        {
+            "id_movie":15,
+            "quantity":10
+        }
+      ]
+    }
   JSON Response Format:
     1.成功購買
       [
@@ -469,12 +541,29 @@
           "messege": "booking success",
         }
       ]
-    2.座位已被訂走(只顯示第一個符合結果)
+    2.座位已被訂走
       [
         {
-          "messege": "seat {seat number} occupied",
+          "messege": "seats have been booked",
+          "repeat_seats":{
+            {id_session}: {repeat_seats_array},
+            {id_session}: {repeat_seats_array},
+            {id_session}: {repeat_seats_array},
+            ...
+          }
         }
       ]
+      [
+        {
+          "messege": "seats have been booked",
+          "repeat_seats":{
+            1: [1,2,3],
+            2: [10,11]
+            ...
+          }
+        }
+      ]
+
     3.未知錯誤
       [
         {

@@ -22,7 +22,10 @@ $result = $cart->booking();
 
 // $result = $rs->fetch_all(MYSQLI_ASSOC);
 
-echo json_encode($result);
+// echo var_dump($result);
+echo print_r($result);
+// echo $result;
+// echo json_encode($result);
 // echo parse_str($result);
 // echo var_dump($result);
 // echo $result;

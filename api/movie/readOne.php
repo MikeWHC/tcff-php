@@ -163,7 +163,7 @@ if(!isset($_GET['id'])){
     //     );
     // }
 
-}elseif($_GET['cf']){
+}elseif($_GET['cf']=="true"){
     $id = $_GET['id'];
     $database = new Database();
     $db = $database->getConnection();
