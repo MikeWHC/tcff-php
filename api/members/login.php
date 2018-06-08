@@ -1,7 +1,8 @@
 <?php
 header("Access-Control-Allow-Origin: *");
 header("Content-Type: application/json; charset=UTF-8");
- 
+// header("Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept, Connection, User-Agent, Cookie");
+
 // include database and object files
 include_once '../config/database.php';
 include_once '../pages/members.php';
@@ -28,5 +29,23 @@ if(isset($_POST['email'])){
 
     echo json_encode($result);
 }else{
-    echo "please post data";
+    // if(! isset($_SESSION)){
+    //     session_start();
+    // }
+    $json = file_get_contents('php://input');
+    $obj = json_decode($json, true);
+    // echo "please post data";
+    // echo json_encode($obj);
+    $result = $members->login($obj['email'], $obj['password']);
+
+    // $result = array("success" => $success);
+
+    // if(isset($_SESSION['user'])){
+    //     $result["username"] = $_SESSION['user']['username'];
+    //     $result["sessionId"] = session_id();
+    // }
+    // setcookie("test","cookie",time()+60*60);
+
+    echo json_encode($result);
+
 }

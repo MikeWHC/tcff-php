@@ -14,9 +14,9 @@ $db = $database->getConnection();
 // initialize object
 $cart = new Cart($db);
 
-if(! isset($_SESSION)){
-    session_start();
-}
+// if(! isset($_SESSION)){
+//     session_start();
+// }
 
 $result = $cart->collection();
 

@@ -43,12 +43,17 @@ class Members{
 
             if($rs->num_rows==1){
                 $row = $rs->fetch_assoc();
-                $_SESSION['user'] = $row;
-                $success = true;
+                // $_SESSION['user'] = $row;
+                // $success = true;
+                $result['success'] = true;
+                $result['user'] = $row;
             }else{
-                $success = false;
+                $result['success'] = false;
             }
-            return $success;
+            return $result;
+        }else{
+            $result['success'] = false;
+            return $result;
         }
     }
 

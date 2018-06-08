@@ -11,12 +11,71 @@ class Cart{
     
     // read collection
     public function collection(){
-        $id = $_SESSION['user']['id'] ? $_SESSION['user']['id'] : 1;
+        // $id = $_SESSION['user']['id'] ? $_SESSION['user']['id'] : 1;
+        // $id = $_SESSION['user']['id'];
+        
         if($_SERVER['REQUEST_METHOD'] === 'GET'){
-            $sql = "SELECT m.id AS id_movie, m.name_zhtw, m.name_en, m.release_year FROM `collection` c JOIN `movie` m ON m.id=c.id_movie WHERE `id_member`=$id";
+            $id = $_GET['id'];
+            //我的片單 讀取會員收藏的片單
+            // $sql = "SELECT m.id AS id_movie, m.name_zhtw, m.name_en, m.release_year, m.cf FROM `collection` c JOIN `movie` m ON m.id=c.id_movie WHERE `id_member`=$id";
+            $sql = "SELECT c.id_movie FROM `collection` c WHERE `id_member`=$id";
+            // $sql = "SELECT m.id AS id_movie, m.name_zhtw, m.name_en, m.release_year, m.cf, s.id AS id_session, s.day, s.date, s.auditorium, s.time FROM `collection` c JOIN `movie` m ON m.id=c.id_movie JOIN `session` s ON s.id_movie = m.id WHERE `id_member`=$id";
+            $rs = $this->conn->query($sql);
+            // $result = $rs->fetch_all(MYSQLI_NUM); //[["1"],["2"]]
+            $id_movie = [];
+            while($row = $rs->fetch_assoc()):
+            array_push($id_movie,$row['id_movie']);
+            endwhile;
+            $id_movie = implode(',',$id_movie);
+            // $sql = "SELECT o.seat FROM `orders` o WHERE `id_session`=$id_session OR `id_movie` IN ($id_movie) ORDER BY `seat`";
+            $sql = "SELECT o.id_movie,o.seat,o.quantity FROM `orders` o WHERE `id_movie` IN ($id_movie)";
+            $rs = $this->conn->query($sql);
+            $seats = $rs->fetch_all(MYSQLI_ASSOC);
+            function reduce($carry,$item){
+                if(!isset($carry[$item['id_movie']])){
+                     $carry[$item['id_movie']] = [];
+                     $carry[$item['id_movie']]['quantity'] = 0;
+                     $carry[$item['id_movie']]['seats'] = [];
+                };
+                array_push($carry[$item['id_movie']]['seats'], $item['seat']);
+                $carry[$item['id_movie']]['quantity'] += $item['quantity'];
+                return $carry;
+            }
+            $seats = array_reduce($seats,"reduce",[]);
+            $sql = "SELECT m.id AS id_movie, m.name_zhtw, m.name_en, m.release_year, m.cf, 
+                    s.id AS id_session, s.day, s.date, s.auditorium, s.time 
+                    FROM `collection` c 
+                    JOIN `movie` m ON m.id=c.id_movie 
+                    LEFT JOIN `session` s ON s.id_movie = m.id 
+                    WHERE `id_member`=$id";
             $rs = $this->conn->query($sql);
             $result = $rs->fetch_all(MYSQLI_ASSOC);
+            // function map(){
+
+            // }
+            // array_map($result,"map");
+            foreach ($result as &$value) {
+                if($value['cf'] == 0){
+                    $value['bookable_seats_count'] = 108;
+                    $value['occupied'] = [];
+                }else{
+                    $value['cf_progress'] = 0;
+                }
+                foreach ($seats as $k => $v) {
+                    if($k == $value['id_movie']){
+                        if($value['cf'] == 0){
+                            $value['bookable_seats_count'] -= $v['quantity'];
+                            $value['occupied'] = $v['seats'];
+                        }else{
+                            $value['cf_progress'] = round(($v['quantity']/108), 2);
+                        }
+                    }
+                }
+            }
+            //查詢每部片的募資進度及剩餘空位
+            // $result.
             return $result;
+
         }elseif($_SERVER['REQUEST_METHOD'] === 'DELETE'){
             $result = [];
             // $id_movie=json_decode(file_get_contents('php://input'),true);
@@ -53,6 +112,9 @@ class Cart{
             return $result;
             $stmt->close();
         }elseif($_SERVER['REQUEST_METHOD'] === 'POST'){
+            $json = file_get_contents('php://input');
+            $obj = json_decode($json, true); 
+            $id = $obj['id'];
             $sql_select = "SELECT c.id_movie FROM `collection` c WHERE `id_member`=$id";
             $rs = $this->conn->query($sql_select);
             // $collection = $rs->fetch_all(MYSQLI_ASSOC);
@@ -62,7 +124,8 @@ class Cart{
             }
             // return $collection;
             $result = [];
-            $id_movie = trim($_SERVER['PATH_INFO'],'/');
+            // $id_movie = trim($_SERVER['PATH_INFO'],'/');
+            $id_movie = $obj['id_movie'];
 
             foreach($collection as $value){
                 if($value === $id_movie){
@@ -80,7 +143,7 @@ class Cart{
             }
 
             $stmt->bind_param('ss',
-                $_SESSION['user']['id'],
+                $id,
                 $id_movie
             );
 
@@ -89,27 +152,77 @@ class Cart{
             $affected_rows = $stmt->affected_rows;
 
             // //將修改後的資料update到session
-            if($affected_rows==1){
+            if($affected_rows==1):
                 $result['message'] = "add 1 collection";
-            }elseif($affected_rows==0){
+            
+
+                // $sql_sel_one = "";
+                // return $result;
+                $stmt->close();
+
+                $sql = "SELECT o.id_movie,o.seat,o.quantity FROM `orders` o WHERE `id_movie`=$id_movie";
+                $rs = $this->conn->query($sql);
+                $seats = $rs->fetch_all(MYSQLI_ASSOC);
+                function reduce($carry,$item){
+                    if(!isset($carry[$item['id_movie']])){
+                        $carry[$item['id_movie']] = [];
+                        $carry[$item['id_movie']]['quantity'] = 0;
+                        $carry[$item['id_movie']]['seats'] = [];
+                    };
+                    array_push($carry[$item['id_movie']]['seats'], $item['seat']);
+                    $carry[$item['id_movie']]['quantity'] += $item['quantity'];
+                    return $carry;
+                }
+                $seats = array_reduce($seats,"reduce",[]);
+                $sql = "SELECT m.id AS id_movie, m.name_zhtw, m.name_en, m.release_year, m.cf, 
+                        s.id AS id_session, s.day, s.date, s.auditorium, s.time 
+                        FROM `movie` m 
+                        LEFT JOIN `session` s ON s.id_movie = m.id 
+                        WHERE id_movie=$id_movie";
+                $rs = $this->conn->query($sql);
+                $result['collection_info'] = [];
+                $result['collection_info'] = $rs->fetch_all(MYSQLI_ASSOC);
+
+                foreach ($result['collection_info'] as &$value) {
+                    if($value['cf'] == 0){
+                        $value['bookable_seats_count'] = 108;
+                        $value['occupied'] = [];
+                    }else{
+                        $value['cf_progress'] = 0;
+                    }
+                    foreach ($seats as $k => $v) {
+                        if($k == $value['id_movie']){
+                            if($value['cf'] == 0){
+                                $value['bookable_seats_count'] -= $v['quantity'];
+                                $value['occupied'] = $v['seats'];
+                            }else{
+                                $value['cf_progress'] = round(($v['quantity']/108), 2);
+                            }
+                        }
+                    }
+                }
+                //查詢每部片的募資進度及剩餘空位
+                // $result.
+                return $result;
+            elseif($affected_rows==0):
                 $result['message'] = "something wrong";
-            }
-            return $result;
-            $stmt->close();
+                $stmt->close();
+                return $result;
+            endif;
         }
     }
 
     public function booking(){
-        $id = isset($_SESSION['user']['id']) ? $_SESSION['user']['id'] : 15;
-        
+        // $id = isset($_SESSION['user']['id']) ? $_SESSION['user']['id'] : 15;
         if($_SERVER['REQUEST_METHOD'] === 'POST'){
             // return $_POST;
             $json = file_get_contents('php://input');
-            $obj = json_decode($json, true); //seconde param=true => return array
+            $obj = json_decode($json, true); //second param=true => return array
             // return $obj;
 
             $films = $obj["films"];
             $cffilms = $obj["cffilms"];
+            $id = $obj['id'];
 
             $sql_select = '';
             $id_session_ar = [];
@@ -246,6 +359,8 @@ class Cart{
             // return $_POST['seat'];
 
         }elseif($_SERVER['REQUEST_METHOD'] === 'GET'){
+            
+            $id = $_GET['id'];
             $id_session = trim($_SERVER['PATH_INFO'],'/');
             $sql_select = "SELECT o.seat FROM `orders` o WHERE `id_session`=$id_session ORDER BY `seat`";
             $rs = $this->conn->query($sql_select);

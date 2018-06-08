@@ -16,5 +16,5 @@ $movie = new Movie($db);
  
 $result = $movie->cfRead();
 
-echo is_array($result) ? print_r($result) : $result;
+echo is_array($result) ? json_encode($result) : $result;
 ?>
