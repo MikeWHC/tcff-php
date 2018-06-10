@@ -81,11 +81,18 @@ class Cart{
             // $id_movie=json_decode(file_get_contents('php://input'),true);
             // $id_movie=file_get_contents('php://input');
             // $request = trim($_SERVER['PATH_INFO'],'/');
-            $id_movie = trim($_SERVER['PATH_INFO'],'/');
+            // $id_movie = trim($_SERVER['PATH_INFO'],'/');
             // $request = explode('/', trim($_SERVER['PATH_INFO'],'/'));
             // $request = $_SERVER['PATH_INFO'];
             // return json_decode($id_movie);
             // return $request;
+
+            $info = explode('/',trim($_SERVER['PATH_INFO'],'/'));
+            $id_movie = $info[0];
+            $id_user = $info[1];
+            // return $result;
+
+
             $sql = "DELETE FROM `collection` WHERE id_member=? AND id_movie=?";
             $stmt = $this->conn->prepare($sql);
 
@@ -95,7 +102,7 @@ class Cart{
             }
 
             $stmt->bind_param('ss',
-                $_SESSION['user']['id'],
+                $id_user,
                 $id_movie
             );
 

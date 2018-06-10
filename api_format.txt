@@ -427,7 +427,8 @@
         ]
     -刪除收藏
       URL: https://<baseApiUrl>/api/cart/collection.php/{id_movie}
-      example URL: https://<baseApiUrl>/api/cart/collection.php/33
+      URL: https://<baseApiUrl>/api/cart/collection.php/{id_movie}/{id_user}
+      example URL: https://<baseApiUrl>/api/cart/collection.php/33/15
       HTTP Verb: DELETE
       JSON Response Format:
         1.刪除成功
