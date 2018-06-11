@@ -29,7 +29,7 @@ class Movie{
         $whereStr = empty($_GET['cf']) ? 1 : "`cf`=$cf";
         // return $cf;
         // select all query
-        $sql = "SELECT m.id AS id_movie, m.name_zhtw, m.name_en, m.release_year, m.theme, d.name_zhtw AS director_name
+        $sql = "SELECT m.id AS id_movie, m.name_zhtw, m.name_en, m.release_year, m.theme, m.cf, d.name_zhtw AS director_name
             FROM movie m
             INNER JOIN (movie_director md
                 INNER JOIN director d

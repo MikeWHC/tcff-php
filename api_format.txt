@@ -1,8 +1,4 @@
-﻿
-
-
-
---查看募資進度
+﻿--查看募資進度
   URL: https://<baseApiUrl>/api/movie/cfRead.php
   HTTP Verb: GET
   JSON Response Format:
@@ -376,57 +372,203 @@
   ]
 
 --我的片單
-  -顯示全部收藏
-    URL: https://<baseApiUrl>/api/cart/collection.php
+  -顯示全部收藏(登入狀態)
+    URL: https://<baseApiUrl>/api/cart/collection.php?id={id_user}
     HTTP Verb: GET
     JSON Response Format:
       [
         {
-          "id_movie": "1",
-          "name_zhtw": "驚魂記",
-          "name_en": "Psycho",
-          "release_year": "1960",
+          "id_movie": "46",
+          "name_zhtw": "心靈捕手",
+          "name_en": "Good Will Hunting",
+          "release_year": "1997",
+          "cf": "0",
+          "id_session": "7",
+          "day": "Sun",
+          "date": "2018-07-01",
+          "auditorium": "台北光點",
+          "time": "18:00:00",
+          "bookable_seats_count": 105,
+          "occupied": [
+              "1",
+              "2",
+              "3"
+              ]
         },
         {
-          "id_movie": "2",
-          "name_zhtw": "畢業生",
-          "name_en": "The Graduate",
-          "release_year": "1967",
-        },
-        {
-          "id_movie": "3",
-          "name_zhtw": "我倆沒有明天",
-          "name_en": "Bonnie and Clyde",
-          "release_year": "1967",
+            "id_movie": "14",
+            "name_zhtw": "誰來晚餐",
+            "name_en": "Guess Who's Coming to Dinner",
+            "release_year": "1967",
+            "cf": "1",
+            "id_session": null,
+            "day": null,
+            "date": null,
+            "auditorium": null,
+            "time": null,
+            "cf_progress": 0.09
         },
         ...
       ]
-    -新增收藏
-      URL: https://<baseApiUrl>/api/cart/collection.php/{id_movie}
-      example URL: https://<baseApiUrl>/api/cart/collection.php/33
-      HTTP Verb: POST
-      JSON Response Format:
-        1.新增成功
-        [
-          {
-            "messege": "add 1 collection",
-          }
-        ]
+  -顯示全部收藏(未登入狀態)
+    URL: https://<baseApiUrl>/api/cart/collection.php/{id_movie}_{id_movie}_...
+    example URL: https://<baseApiUrl>/api/cart/collection.php/1_2_3...
+    HTTP Verb: GET
+    JSON Response Format:
+      [
+        {
+          "id_movie": "46",
+          "name_zhtw": "心靈捕手",
+          "name_en": "Good Will Hunting",
+          "release_year": "1997",
+          "cf": "0",
+          "id_session": "7",
+          "day": "Sun",
+          "date": "2018-07-01",
+          "auditorium": "台北光點",
+          "time": "18:00:00",
+          "bookable_seats_count": 105,
+          "occupied": [
+              "1",
+              "2",
+              "3"
+              ]
+        },
+        {
+            "id_movie": "14",
+            "name_zhtw": "誰來晚餐",
+            "name_en": "Guess Who's Coming to Dinner",
+            "release_year": "1967",
+            "cf": "1",
+            "id_session": null,
+            "day": null,
+            "date": null,
+            "auditorium": null,
+            "time": null,
+            "cf_progress": 0.09
+        },
+        ...
+      ]
+  -新增收藏(加一筆 => 細節頁、列表頁)
+    URL: https://<baseApiUrl>/api/cart/collection.php
+    HTTP Verb: POST
+    POST data Format:
+      [
+        {
+          "id": "1",(id_user)
+          "id_movie": "1"
+        }
+      ]
+    JSON Response Format:
+      1.新增成功
+      [
+        {
+          "messege": "add 1 collection",
+          "collection_info": 
+            [
+              {
+                  "id_movie": "19",
+                  "name_zhtw": "異形",
+                  "name_en": "Alien",
+                  "release_year": "1974",
+                  "cf": "0",
+                  "id_session": "14",
+                  "day": "Tue",
+                  "date": "2018-07-03",
+                  "auditorium": "誠品電影院",
+                  "time": "19:30:00",
+                  "bookable_seats_count": 108,
+                  "occupied": []
+              },
+            ] 
+        }
+      ]
 
-        2.已經在片單中
-        [
-          {
-            "messege": "already in your collection",
-          }
+      2.已經在片單中
+      [
+        {
+          "messege": "already in your collection",
+        }
+      ]
+      3.未知錯誤
+      [
+        {
+          "messege": "something wrong",
+        }
+      ]
+  -新增收藏(加多筆 => 我的片單頁)
+    URL: https://<baseApiUrl>/api/cart/collection.php
+    HTTP Verb: POST
+    POST data Format:
+      [
+        {
+          "id": "1",(id_user)
+          "id_movie": "1_2_3..."
+        }
+      ]
+    JSON Response Format:
+      1.新增成功
+      {
+        "message": "add collections",
+        "collection_info": [
+            {
+                "id_movie": "51",
+                "name_zhtw": "小鬼當家",
+                "name_en": "Home Alone",
+                "release_year": "1990",
+                "cf": "0",
+                "id_session": "28",
+                "day": "Sat",
+                "date": "2018-07-07",
+                "auditorium": "誠品電影院",
+                "time": "18:00:00",
+                "bookable_seats_count": 108,
+                "occupied": []
+            },
+            {
+                "id_movie": "52",
+                "name_zhtw": "小鬼當家2",
+                "name_en": "Home Alone 2",
+                "release_year": "1992",
+                "cf": "0",
+                "id_session": "37",
+                "day": "Sun",
+                "date": "2018-07-08",
+                "auditorium": "台北光點",
+                "time": "18:00:00",
+                "bookable_seats_count": 108,
+                "occupied": []
+            },
+            {
+                "id_movie": "53",
+                "name_zhtw": "小鬼當家3",
+                "name_en": "Home Alone 3",
+                "release_year": "1997",
+                "cf": "0",
+                "id_session": "38",
+                "day": "Sun",
+                "date": "2018-07-08",
+                "auditorium": "誠品電影院",
+                "time": "18:00:00",
+                "bookable_seats_count": 108,
+                "occupied": []
+            }
         ]
-        3.未知錯誤
-        [
-          {
-            "messege": "something wrong",
-          }
-        ]
-    -刪除收藏
-      URL: https://<baseApiUrl>/api/cart/collection.php/{id_movie}
+      }
+
+      2.已經在片單中(任一)
+      [
+        {
+          "messege": "already in your collection",
+        }
+      ]
+      3.未知錯誤
+      [
+        {
+          "messege": "something wrong",
+        }
+      ]
+  -刪除收藏(刪除一筆 => 細節頁、列表頁、我的片單頁)
       URL: https://<baseApiUrl>/api/cart/collection.php/{id_movie}/{id_user}
       example URL: https://<baseApiUrl>/api/cart/collection.php/33/15
       HTTP Verb: DELETE
@@ -443,7 +585,53 @@
             "messege": "something wrong",
           }
         ]
-
+  -刪除收藏(刪除多筆 => 結帳成功後)
+      URL: https://<baseApiUrl>/api/cart/collection.php/{id_movie}_{id_movie}_{id_movie}_.../{id_user}
+      example URL: https://<baseApiUrl>/api/cart/collection.php/33_44_55.../15
+      HTTP Verb: DELETE
+      JSON Response Format:
+        1.刪除成功
+        [
+          {
+            "messege": "delete collections",
+          }
+        ]
+        2.未知錯誤
+        [
+          {
+            "messege": "something wrong",
+          }
+        ]
+  -更新收藏(刪除多筆 => 結帳成功後)
+      URL: https://<baseApiUrl>/api/cart/collection.php
+      HTTP Verb: PUT
+      POST data Format:
+      [
+        {
+          "id": "1",(id_user)
+          "id_movie": ["1","2"...]
+        }
+      ]
+      JSON Response Format:
+        1.更新成功
+        [
+          {
+            "messege": "update collections",
+            "collection_info" : all collection_info
+          }
+        ]
+        2.沒有需要更新的(已在收藏中了)
+        [
+          {
+            "messege": "nothing to update",
+          }
+        ]
+        3.未知錯誤
+        [
+          {
+            "messege": "something wrong",
+          }
+        ]
 
 --劃位
   URL: https://<baseApiUrl>/api/cart/booking.php/{id_session}
@@ -573,39 +761,39 @@
       ]
 
 --場次表
-URL: https://<baseApiUrl>/api/movie/session.php
-HTTP Verb: GET
-JSON Response Format:
-[
-  {
-    "id_session": "1",
-    "date": "2018-07-01",
-    "day": "Sun",
-    "time": "10:00:00",
-    "auditorium": "台北光點",
-    "id_movie": "1",
-    "name_zhtw": "驚魂記",
-    "running_time": "109"
-  },
-  {
-    "id_session": "2",
-    "date": "2018-07-01",
-    "day": "Sun",
-    "time": "10:00:00",
-    "auditorium": "誠品電影院",
-    "id_movie": "3",
-    "name_zhtw": "我倆沒有明天",
-    "running_time": "111"
-  },
-  {
-    "id_session": "3",
-    "date": "2018-07-01",
-    "day": "Sun",
-    "time": "12:30:00",
-    "auditorium": "台北光點",
-    "id_movie": "16",
-    "name_zhtw": "教父",
-    "running_time": "175"
-  },
-]
+  URL: https://<baseApiUrl>/api/movie/session.php
+  HTTP Verb: GET
+  JSON Response Format:
+  [
+    {
+      "id_session": "1",
+      "date": "2018-07-01",
+      "day": "Sun",
+      "time": "10:00:00",
+      "auditorium": "台北光點",
+      "id_movie": "1",
+      "name_zhtw": "驚魂記",
+      "running_time": "109"
+    },
+    {
+      "id_session": "2",
+      "date": "2018-07-01",
+      "day": "Sun",
+      "time": "10:00:00",
+      "auditorium": "誠品電影院",
+      "id_movie": "3",
+      "name_zhtw": "我倆沒有明天",
+      "running_time": "111"
+    },
+    {
+      "id_session": "3",
+      "date": "2018-07-01",
+      "day": "Sun",
+      "time": "12:30:00",
+      "auditorium": "台北光點",
+      "id_movie": "16",
+      "name_zhtw": "教父",
+      "running_time": "175"
+    },
+  ]
 
