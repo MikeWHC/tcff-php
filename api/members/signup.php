@@ -22,16 +22,16 @@ if(isset($_POST['email'])){
 
     if(filter_var($_POST['email'], FILTER_VALIDATE_EMAIL) === false){
         $result['success'] = false;
-        $result['messege'] = 'email wrong format';
+        $result['message'] = 'email wrong format';
     }
 
     if(mb_strlen($_POST['username'], 'UTF-8')<2){ //mb_strlen第二個參數是編碼
         $result['success'] = false;
-        $result['messege'] = 'username wrong format';
+        $result['message'] = 'username wrong format';
     }
     if(strlen($_POST['password'])<6){
         $result['success'] = false;
-        $result['messege'] = 'password wrong format';
+        $result['message'] = 'password wrong format';
     }
 
     if($result['success']){
@@ -46,16 +46,46 @@ if(isset($_POST['email'])){
         
         if($affected_rows===-1){
             $result['success'] = false;
-            $result['messege'] = 'email used';
+            $result['message'] = 'email used';
         }elseif($affected_rows===0){
             $result['success'] = false;
-            $result['messege'] = 'unknown bug';
+            $result['message'] = 'unknown bug';
         }    
     }
 
 } else {
-    $result['success'] = false;
-    $result['messege'] = 'no email';
+    $json = file_get_contents('php://input');
+    $obj = json_decode($json, true);
+    
+    if(filter_var($obj['email'], FILTER_VALIDATE_EMAIL) === false){
+        $result['success'] = false;
+        $result['message'] = 'email wrong format';
+    }
+
+    // if(mb_strlen($obj['username'], 'UTF-8')<2){ //mb_strlen第二個參數是編碼
+    //     $result['success'] = false;
+    //     $result['message'] = 'username wrong format';
+    // }
+    if(strlen($obj['password'])<6){
+        $result['success'] = false;
+        $result['message'] = 'password wrong format';
+    }
+
+    if($result['success']){
+
+        $affected_rows = $members->create($obj);
+        
+        if($affected_rows===-1){
+            $result['success'] = false;
+            $result['message'] = 'email used';
+        }elseif($affected_rows===0){
+            $result['success'] = false;
+            $result['message'] = 'unknown bug';
+        }    
+    }
+    // $result['success'] = true;
+    // $result['success'] = false;
+    // $result['message'] = 'no email';
 }
 
 echo json_encode($result, JSON_UNESCAPED_UNICODE);

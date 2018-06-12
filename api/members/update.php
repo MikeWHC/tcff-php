@@ -24,9 +24,9 @@ $method = $_SERVER['REQUEST_METHOD'];
 if($method === "GET"){
     echo json_encode($_SESSION["user"]);
 }elseif($method === "POST"){
-    $messege = $members->update();
-    $result = ["messege"=>$messege];
-    if($messege==="success"){
+    $message = $members->update();
+    $result = ["message"=>$message];
+    if($message==="success"){
         $result['user'] = $_SESSION['user'];
         echo json_encode($result);
     }else{

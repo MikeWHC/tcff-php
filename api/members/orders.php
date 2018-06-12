@@ -14,9 +14,9 @@ $db = $database->getConnection();
 // initialize object
 $members = new Members($db);
 
-if(! isset($_SESSION)){
-    session_start();
-}
+// if(! isset($_SESSION)){
+//     session_start();
+// }
 
 $rs = $members->orders();
 
@@ -67,7 +67,8 @@ while($row = $rs->fetch_assoc()){
     // $result[0]['order_date']
 };
 
-
+echo json_encode($result);
+exit;
 // $result = $rs->fetch_all(MYSQLI_ASSOC);
 // echo var_dump(array_count_values($result));
 
@@ -222,15 +223,15 @@ echo print_r($orders2);
 //     echo print_r($value);
 // }
 // echo $result[0]['seat'];
-echo "session<br/>";
-echo print_r($session);
-echo "date<br/>";
-echo print_r($date);
-echo "seat<br/>";
-echo print_r($seat);
-echo "prefix<br/>";
-echo var_dump($prefix);
-echo "result<br/>";
-echo json_encode($result);
+// echo "session<br/>";
+// echo print_r($session);
+// echo "date<br/>";
+// echo print_r($date);
+// echo "seat<br/>";
+// echo print_r($seat);
+// echo "prefix<br/>";
+// echo var_dump($prefix);
+// echo "result<br/>";
+// echo json_encode($result);
 
 ?>

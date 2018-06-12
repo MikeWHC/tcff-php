@@ -11,14 +11,13 @@ class Members{
     
     // sign up 
     public function create($member_arr){ 
-        $sql = "INSERT INTO `members`(`email`, `password`, `username`, `created_at`) VALUES (?, ?, ?, NOW())";
+        $sql = "INSERT INTO `members`(`email`, `password`, `created_at`) VALUES (?, ?, NOW())";
 
         $stmt = $this->conn->prepare($sql);
 
-        $stmt->bind_param('sss',
+        $stmt->bind_param('ss',
             $member_arr['email'],
-            $member_arr['password'],
-            $member_arr['username']
+            $member_arr['password']
         );
         $stmt->execute();
         $affected_rows = $stmt->affected_rows;
@@ -105,8 +104,11 @@ class Members{
     }
 
     public function orders(){ 
-        $sql = sprintf("SELECT id_session, seat, order_date FROM `orders` o WHERE `id_member`=%s ORDER BY order_date DESC, id_session ASC",
-            $_SESSION['user']['id']
+        $sql = sprintf("SELECT o.id_session, o.seat, o.order_date, m.name_zhtw, m.id, s.date, s.time, s.auditorium, o.quantity FROM `orders` o 
+        JOIN `movie` m ON o.id_movie=m.id
+        LEFT JOIN `session` s ON s.id_movie=m.id
+        WHERE `id_member`=%s ORDER BY order_date DESC, id_session ASC",
+            $_GET['id']
             );
 
         $rs = $this->conn->query($sql);

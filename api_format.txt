@@ -1,5 +1,5 @@
 ﻿--查看募資進度
-  URL: https://<baseApiUrl>/api/movie/cfRead.php
+  URL: http://<baseApiUrl>/api/movie/cfRead.php
   HTTP Verb: GET
   JSON Response Format:
   {
@@ -18,7 +18,7 @@
   }
 
 --募資電影細節頁
-  URL: https://<baseApiUrl>/api/movie/readOne.php?id=<id_movie>&cf=true
+  URL: http://<baseApiUrl>/api/movie/readOne.php?id=<id_movie>&cf=true
   HTTP Verb: GET
   JSON Response Format:
   [
@@ -32,7 +32,7 @@
       "rating": "保護級",
       "synopsis": "12岁女孩子奥菲丽娅...",
       "award": "本片在2007年1月被提...",
-      "trailer": "https://youtu.be/A49_0yzI70Y",
+      "trailer": "http://youtu.be/A49_0yzI70Y",
       "director": [
               {
                 "id_director": "68",
@@ -59,7 +59,7 @@
   ]
 
 --確映電影細節頁
-  URL: https://<baseApiUrl>/api/movie/readOne.php?id=<id_movie>
+  URL: http://<baseApiUrl>/api/movie/readOne.php?id=<id_movie>
   HTTP Verb: GET
   JSON Response Format:
   [
@@ -73,7 +73,7 @@
     "rating": "保護級",
     "synopsis": "改編自楚門卡波特的暢銷小說，奧黛麗赫...",
     "award": "《第凡内的早餐》被影評界譽為「60年代美...",
-    "trailer": "https://www.youtube.com/watch?v=hQ_O15kYlCI",
+    "trailer": "http://www.youtube.com/watch?v=hQ_O15kYlCI",
     "id_session": "22",
     "date": "2018-07-07",
     "day": "Sat",
@@ -111,7 +111,7 @@
   ]
 
 --募資電影列表
-  URL: https://<baseApiUrl>/api/movie/read.php?cf=true
+  URL: http://<baseApiUrl>/api/movie/read.php?cf=true
   HTTP Verb: GET
   JSON Response Format:
   [
@@ -140,7 +140,7 @@
   ]
 
 --確映電影列表
-  URL: https://<baseApiUrl>/api/movie/read.php?cf=false
+  URL: http://<baseApiUrl>/api/movie/read.php?cf=false
   HTTP Verb: GET
   JSON Response Format:
   [
@@ -169,12 +169,11 @@
   ]
 
 --會員註冊
-  URL: https://<baseApiUrl>/api/members/signup.php
+  URL: http://<baseApiUrl>/api/members/signup.php
   HTTP Verb: POST
   POST data Format:
     [
       {
-        "username": "tcff_test",
         "email": "tcff_test@gmail.com",
         "password": "123456789"
       }
@@ -190,41 +189,41 @@
       [
         {
           "success": "false",
-          "messege": "email wrong format",
+          "message": "email wrong format",
         }
       ]
     3.格式錯誤(username)
       [
         {
           "success": "false",
-          "messege": "username wrong format",
+          "message": "username wrong format",
         }
       ]
     4.格式錯誤(password)
       [
         {
           "success": "false",
-          "messege": "password wrong format",
+          "message": "password wrong format",
         }
       ]
     5.email已被使用
       [
         {
           "success": "false",
-          "messege": "email used",
+          "message": "email used",
         }
       ]
     6.沒有給email
       [
         {
           "success": "false",
-          "messege": "no email",
+          "message": "no email",
         }
       ]
 
 
 --會員登入
-  URL: https://<baseApiUrl>/api/members/login.php
+  URL: http://<baseApiUrl>/api/members/login.php
   HTTP Verb: POST
   POST data Format:
     [
@@ -250,11 +249,11 @@
       ]
 
 --會員登出
-  URL: https://<baseApiUrl>/api/members/logout.php
+  URL: http://<baseApiUrl>/api/members/logout.php
   HTTP Verb: GET
 
 --會員資料(修改)
-  URL: https://<baseApiUrl>/api/members/update.php
+  URL: http://<baseApiUrl>/api/members/update.php
 
   -表格秀出會員資料
     HTTP Verb: GET
@@ -280,21 +279,21 @@
       1.密碼錯誤
       [
         {
-          "messege": "wrongPass",
+          "message": "wrongPass",
         }
       ]
 
       2.沒有改變
       [
         {
-          "messege": "not change",
+          "message": "not change",
         }
       ]
 
       3.成功修改(表格秀出修改過的會員資料)
       [
         {
-          "messege": "success",
+          "message": "success",
           "user": 
           {
             "username": "tcff_test",
@@ -305,7 +304,7 @@
 
 
 (X)--查詢訂票紀錄
-  URL: https://<baseApiUrl>/api/members/orders.php
+  URL: http://<baseApiUrl>/api/members/orders.php?id={id_user}
   HTTP Verb: GET
   JSON Response Format:
   {
@@ -371,9 +370,34 @@
     },
   ]
 
+  正確版
+  JSON Response Format:
+  {
+        "id_session": "0",
+        "seat": "0",
+        "order_date": "2018-06-08 15:12:44",
+        "name_zhtw": "誰來晚餐",
+        "id": "14",
+        "date": null,
+        "time": null,
+        "auditorium": null,
+        "quantity": "1"
+    },
+    {
+        "id_session": "1",
+        "seat": "79",
+        "order_date": "2018-06-08 15:12:44",
+        "name_zhtw": "驚魂記",
+        "id": "1",
+        "date": "2018-07-01",
+        "time": "10:00:00",
+        "auditorium": "台北光點",
+        "quantity": "1"
+    },
+
 --我的片單
   -顯示全部收藏(登入狀態)
-    URL: https://<baseApiUrl>/api/cart/collection.php?id={id_user}
+    URL: http://<baseApiUrl>/api/cart/collection.php?id={id_user}
     HTTP Verb: GET
     JSON Response Format:
       [
@@ -411,8 +435,8 @@
         ...
       ]
   -顯示全部收藏(未登入狀態)
-    URL: https://<baseApiUrl>/api/cart/collection.php/{id_movie}_{id_movie}_...
-    example URL: https://<baseApiUrl>/api/cart/collection.php/1_2_3...
+    URL: http://<baseApiUrl>/api/cart/collection.php/{id_movie}_{id_movie}_...
+    example URL: http://<baseApiUrl>/api/cart/collection.php/1_2_3...
     HTTP Verb: GET
     JSON Response Format:
       [
@@ -450,7 +474,7 @@
         ...
       ]
   -新增收藏(加一筆 => 細節頁、列表頁)
-    URL: https://<baseApiUrl>/api/cart/collection.php
+    URL: http://<baseApiUrl>/api/cart/collection.php
     HTTP Verb: POST
     POST data Format:
       [
@@ -463,7 +487,7 @@
       1.新增成功
       [
         {
-          "messege": "add 1 collection",
+          "message": "add 1 collection",
           "collection_info": 
             [
               {
@@ -487,17 +511,17 @@
       2.已經在片單中
       [
         {
-          "messege": "already in your collection",
+          "message": "already in your collection",
         }
       ]
       3.未知錯誤
       [
         {
-          "messege": "something wrong",
+          "message": "something wrong",
         }
       ]
   -新增收藏(加多筆 => 我的片單頁)
-    URL: https://<baseApiUrl>/api/cart/collection.php
+    URL: http://<baseApiUrl>/api/cart/collection.php
     HTTP Verb: POST
     POST data Format:
       [
@@ -559,51 +583,51 @@
       2.已經在片單中(任一)
       [
         {
-          "messege": "already in your collection",
+          "message": "already in your collection",
         }
       ]
       3.未知錯誤
       [
         {
-          "messege": "something wrong",
+          "message": "something wrong",
         }
       ]
   -刪除收藏(刪除一筆 => 細節頁、列表頁、我的片單頁)
-      URL: https://<baseApiUrl>/api/cart/collection.php/{id_movie}/{id_user}
-      example URL: https://<baseApiUrl>/api/cart/collection.php/33/15
+      URL: http://<baseApiUrl>/api/cart/collection.php/{id_movie}/{id_user}
+      example URL: http://<baseApiUrl>/api/cart/collection.php/33/15
       HTTP Verb: DELETE
       JSON Response Format:
         1.刪除成功
         [
           {
-            "messege": "delete 1 data",
+            "message": "delete 1 data",
           }
         ]
         2.未知錯誤
         [
           {
-            "messege": "something wrong",
+            "message": "something wrong",
           }
         ]
   -刪除收藏(刪除多筆 => 結帳成功後)
-      URL: https://<baseApiUrl>/api/cart/collection.php/{id_movie}_{id_movie}_{id_movie}_.../{id_user}
-      example URL: https://<baseApiUrl>/api/cart/collection.php/33_44_55.../15
+      URL: http://<baseApiUrl>/api/cart/collection.php/{id_movie}_{id_movie}_{id_movie}_.../{id_user}
+      example URL: http://<baseApiUrl>/api/cart/collection.php/33_44_55.../15
       HTTP Verb: DELETE
       JSON Response Format:
         1.刪除成功
         [
           {
-            "messege": "delete collections",
+            "message": "delete collections",
           }
         ]
         2.未知錯誤
         [
           {
-            "messege": "something wrong",
+            "message": "something wrong",
           }
         ]
-  -更新收藏(刪除多筆 => 結帳成功後)
-      URL: https://<baseApiUrl>/api/cart/collection.php
+  -更新收藏(登入後將storage中的collection更新至DB)
+      URL: http://<baseApiUrl>/api/cart/collection.php
       HTTP Verb: PUT
       POST data Format:
       [
@@ -616,25 +640,25 @@
         1.更新成功
         [
           {
-            "messege": "update collections",
+            "message": "update collections",
             "collection_info" : all collection_info
           }
         ]
         2.沒有需要更新的(已在收藏中了)
         [
           {
-            "messege": "nothing to update",
+            "message": "nothing to update",
           }
         ]
         3.未知錯誤
         [
           {
-            "messege": "something wrong",
+            "message": "something wrong",
           }
         ]
 
 --劃位
-  URL: https://<baseApiUrl>/api/cart/booking.php/{id_session}
+  URL: http://<baseApiUrl>/api/cart/booking.php/{id_session}
   HTTP Verb: GET
   JSON Response Format:
   [
@@ -661,7 +685,7 @@
 
 
 --結帳
-  URL: https://<baseApiUrl>/api/cart/booking.php
+  URL: http://<baseApiUrl>/api/cart/booking.php
   HTTP Verb: POST
   POST data Format:
     {
@@ -727,13 +751,13 @@
     1.成功購買
       [
         {
-          "messege": "booking success",
+          "message": "booking success",
         }
       ]
     2.座位已被訂走
       [
         {
-          "messege": "seats have been booked",
+          "message": "seats have been booked",
           "repeat_seats":{
             {id_session}: {repeat_seats_array},
             {id_session}: {repeat_seats_array},
@@ -744,7 +768,7 @@
       ]
       [
         {
-          "messege": "seats have been booked",
+          "message": "seats have been booked",
           "repeat_seats":{
             1: [1,2,3],
             2: [10,11]
@@ -756,12 +780,12 @@
     3.未知錯誤
       [
         {
-          "messege": "something wrong",
+          "message": "something wrong",
         }
       ]
 
 --場次表
-  URL: https://<baseApiUrl>/api/movie/session.php
+  URL: http://<baseApiUrl>/api/movie/session.php
   HTTP Verb: GET
   JSON Response Format:
   [

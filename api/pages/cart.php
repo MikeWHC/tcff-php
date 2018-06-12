@@ -174,8 +174,11 @@ class Cart{
                 return $result;
                 $stmt->close();
             }else{
-                $id_movie = preg_replace("_",",",$id_movie);
-                $sql = "DELETE FROM `collection` WHERE id_member=? AND id_movie IN (?)";
+                $id_movie = preg_replace("/_/",",",$id_movie);
+                // $id_movie = str_replace("_",",",$id_movie);
+                $result["id_movie"] = $id_movie;
+                $sql = "DELETE FROM `collection` WHERE id_member=$id_user AND id_movie IN ($id_movie)";
+                $result["sql"] = $sql;
                 $stmt = $this->conn->prepare($sql);
 
                 if($this->conn->errno){
@@ -183,10 +186,10 @@ class Cart{
                     exit;
                 }
 
-                $stmt->bind_param('ss',
-                    $id_user,
-                    $id_movie
-                );
+                // $stmt->bind_param('ss',
+                //     $id_user,
+                //     $id_movie
+                // );
 
                 $stmt->execute();
 
@@ -521,7 +524,8 @@ class Cart{
             }
             $id_session = implode(",",$id_session_ar);
             // return $id_session;
-            $sql_select = "SELECT o.seat, o.id_session FROM `orders` o WHERE `id_member`=$id AND `id_session` IN ($id_session)";
+            // $sql_select = "SELECT o.seat, o.id_session FROM `orders` o WHERE `id_member`=$id AND `id_session` IN ($id_session)";
+            $sql_select = "SELECT o.seat, o.id_session FROM `orders` o WHERE `id_session` IN ($id_session)";
             $rs = $this->conn->query($sql_select);
             $datas = [];            
             $occupied_seats = [];
@@ -565,8 +569,9 @@ class Cart{
                 $sql_insert = "INSERT INTO `orders`(`cf`, `id_movie`, `quantity`, `id_session`, `seat`, `id_member`, `order_date`) VALUES ";
                 foreach($films as $value){
                     $s = $value['session'];
+                    $id_m = $value['id_movie'];
                     foreach ($value['seats'] as $v) {                        
-                        $sql_insert .= "(0,0,1,$s, $v, $id, NOW()),";
+                        $sql_insert .= "(0,$id_m,1,$s, $v, $id, NOW()),";
                     }
                 }
                 foreach ($cffilms as $value) {
@@ -648,7 +653,7 @@ class Cart{
             // return $seats;
             // return $_POST['seat'];
 
-        }elseif($_SERVER['REQUEST_METHOD'] === 'GET'){
+        }elseif($_SERVER['REQUEST_METHOD'] === 'GET'){//劃位查詢座位狀況
             
             $id = $_GET['id'];
             $id_session = trim($_SERVER['PATH_INFO'],'/');
