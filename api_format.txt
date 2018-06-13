@@ -1,5 +1,5 @@
 ﻿--查看募資進度
-  URL: http://<baseApiUrl>/api/movie/cfRead.php
+  Request URL: http://192.168.39.110/tcff_php/api/movie/cfRead.php
   HTTP Verb: GET
   JSON Response Format:
   {
@@ -18,7 +18,7 @@
   }
 
 --募資電影細節頁
-  URL: http://<baseApiUrl>/api/movie/readOne.php?id=<id_movie>&cf=true
+  Request URL: http://192.168.39.110/tcff_php/api/movie/readOne.php?id=<id_movie>&cf=true
   HTTP Verb: GET
   JSON Response Format:
   [
@@ -59,7 +59,7 @@
   ]
 
 --確映電影細節頁
-  URL: http://<baseApiUrl>/api/movie/readOne.php?id=<id_movie>
+  Request URL: http://192.168.39.110/tcff_php/api/movie/readOne.php?id=<id_movie>
   HTTP Verb: GET
   JSON Response Format:
   [
@@ -111,70 +111,47 @@
   ]
 
 --募資電影列表
-  URL: http://<baseApiUrl>/api/movie/read.php?cf=true
+  Request URL: http://192.168.39.110/tcff_php/api/movie/read.php?cf=true
   HTTP Verb: GET
   JSON Response Format:
   [
     {
-      "id_movie": "1",
-      "name_zhtw": "驚魂記",
-      "name_en": "Psycho",
-      "release_year": "1960",
-      "director_name": "亞佛烈德·希區考克"
-    },
-    {
-      "id_movie": "2",
-      "name_zhtw": "畢業生",
-      "name_en": "The Graduate",
-      "release_year": "1967",
-      "director_name": "麥克·尼可斯"
-    },
-    {
-      "id_movie": "3",
-      "name_zhtw": "我倆沒有明天",
-      "name_en": "Bonnie and Clyde",
-      "release_year": "1967",
-      "director_name": "亞瑟‧潘"
+        "id_movie": "13",
+        "name_zhtw": "2001太空漫遊",
+        "name_en": "2001 A Space Odyssey",
+        "release_year": "1968",
+        "theme": "奇幻",
+        "cf": "1",
+        "director_name": "史丹利·庫柏力克"
     },
     ...
   ]
 
 --確映電影列表
-  URL: http://<baseApiUrl>/api/movie/read.php?cf=false
+  Request URL: http://192.168.39.110/tcff_php/api/movie/read.php?cf=false
   HTTP Verb: GET
   JSON Response Format:
   [
     {
-      "id_movie": "1",
-      "name_zhtw": "驚魂記",
-      "name_en": "Psycho",
-      "release_year": "1960",
-      "director_name": "亞佛烈德·希區考克"
-    },
-    {
-      "id_movie": "2",
-      "name_zhtw": "畢業生",
-      "name_en": "The Graduate",
-      "release_year": "1967",
-      "director_name": "麥克·尼可斯"
-    },
-    {
-      "id_movie": "3",
-      "name_zhtw": "我倆沒有明天",
-      "name_en": "Bonnie and Clyde",
-      "release_year": "1967",
-      "director_name": "亞瑟‧潘"
+        "id_movie": "1",
+        "name_zhtw": "驚魂記",
+        "name_en": "Psycho",
+        "release_year": "1960",
+        "theme": "驚悚",
+        "cf": "0",
+        "director_name": "亞佛烈德·希區考克"
     },
     ...
   ]
 
 --會員註冊
-  URL: http://<baseApiUrl>/api/members/signup.php
+  Request URL: http://192.168.39.110/tcff_php/api/members/signup.php
   HTTP Verb: POST
   POST data Format:
     [
       {
         "email": "tcff_test@gmail.com",
+        "username": "小明",
         "password": "123456789"
       }
     ]
@@ -223,7 +200,7 @@
 
 
 --會員登入
-  URL: http://<baseApiUrl>/api/members/login.php
+  Request URL: http://192.168.39.110/tcff_php/api/members/login.php
   HTTP Verb: POST
   POST data Format:
     [
@@ -248,12 +225,12 @@
         }
       ]
 
---會員登出
-  URL: http://<baseApiUrl>/api/members/logout.php
+(X)--會員登出
+  Request URL: http://192.168.39.110/tcff_php/api/members/logout.php
   HTTP Verb: GET
 
---會員資料(修改)
-  URL: http://<baseApiUrl>/api/members/update.php
+(X)--會員資料(修改)
+  Request URL: http://192.168.39.110/tcff_php/api/members/update.php
 
   -表格秀出會員資料
     HTTP Verb: GET
@@ -304,7 +281,7 @@
 
 
 (X)--查詢訂票紀錄
-  URL: http://<baseApiUrl>/api/members/orders.php?id={id_user}
+  Request URL: http://192.168.39.110/tcff_php/api/members/orders.php?id={id_user}
   HTTP Verb: GET
   JSON Response Format:
   {
@@ -397,46 +374,51 @@
 
 --我的片單
   -顯示全部收藏(登入狀態)
-    URL: http://<baseApiUrl>/api/cart/collection.php?id={id_user}
+    Request URL: http://192.168.39.110/tcff_php/api/cart/collection.php?id={id_user}
     HTTP Verb: GET
     JSON Response Format:
-      [
+      1.成功讀取
+        [
+          {
+            "id_movie": "46",
+            "name_zhtw": "心靈捕手",
+            "name_en": "Good Will Hunting",
+            "release_year": "1997",
+            "cf": "0",
+            "id_session": "7",
+            "day": "Sun",
+            "date": "2018-07-01",
+            "auditorium": "台北光點",
+            "time": "18:00:00",
+            "bookable_seats_count": 105,
+            "occupied": [
+                "1",
+                "2",
+                "3"
+                ]
+          },
+          {
+              "id_movie": "14",
+              "name_zhtw": "誰來晚餐",
+              "name_en": "Guess Who's Coming to Dinner",
+              "release_year": "1967",
+              "cf": "1",
+              "id_session": null,
+              "day": null,
+              "date": null,
+              "auditorium": null,
+              "time": null,
+              "cf_progress": 0.09
+          },
+          ...
+        ]
+      2.沒有收藏
         {
-          "id_movie": "46",
-          "name_zhtw": "心靈捕手",
-          "name_en": "Good Will Hunting",
-          "release_year": "1997",
-          "cf": "0",
-          "id_session": "7",
-          "day": "Sun",
-          "date": "2018-07-01",
-          "auditorium": "台北光點",
-          "time": "18:00:00",
-          "bookable_seats_count": 105,
-          "occupied": [
-              "1",
-              "2",
-              "3"
-              ]
-        },
-        {
-            "id_movie": "14",
-            "name_zhtw": "誰來晚餐",
-            "name_en": "Guess Who's Coming to Dinner",
-            "release_year": "1967",
-            "cf": "1",
-            "id_session": null,
-            "day": null,
-            "date": null,
-            "auditorium": null,
-            "time": null,
-            "cf_progress": 0.09
-        },
-        ...
-      ]
+          "message": "empty collection"
+        }
   -顯示全部收藏(未登入狀態)
-    URL: http://<baseApiUrl>/api/cart/collection.php/{id_movie}_{id_movie}_...
-    example URL: http://<baseApiUrl>/api/cart/collection.php/1_2_3...
+    Request URL: http://192.168.39.110/tcff_php/api/cart/collection.php/{id_movie}_{id_movie}_...
+     -example: http://192.168.39.110/tcff_php/api/cart/collection.php/1_2_3...
     HTTP Verb: GET
     JSON Response Format:
       [
@@ -474,7 +456,7 @@
         ...
       ]
   -新增收藏(加一筆 => 細節頁、列表頁)
-    URL: http://<baseApiUrl>/api/cart/collection.php
+    Request URL: http://192.168.39.110/tcff_php/api/cart/collection.php
     HTTP Verb: POST
     POST data Format:
       [
@@ -521,7 +503,7 @@
         }
       ]
   -新增收藏(加多筆 => 我的片單頁)
-    URL: http://<baseApiUrl>/api/cart/collection.php
+    Request URL: http://192.168.39.110/tcff_php/api/cart/collection.php
     HTTP Verb: POST
     POST data Format:
       [
@@ -593,8 +575,8 @@
         }
       ]
   -刪除收藏(刪除一筆 => 細節頁、列表頁、我的片單頁)
-      URL: http://<baseApiUrl>/api/cart/collection.php/{id_movie}/{id_user}
-      example URL: http://<baseApiUrl>/api/cart/collection.php/33/15
+      Request URL: http://192.168.39.110/tcff_php/api/cart/collection.php/{id_movie}/{id_user}
+       - Request URL: http://192.168.39.110/tcff_php/api/cart/collection.php/33/15
       HTTP Verb: DELETE
       JSON Response Format:
         1.刪除成功
@@ -610,8 +592,8 @@
           }
         ]
   -刪除收藏(刪除多筆 => 結帳成功後)
-      URL: http://<baseApiUrl>/api/cart/collection.php/{id_movie}_{id_movie}_{id_movie}_.../{id_user}
-      example URL: http://<baseApiUrl>/api/cart/collection.php/33_44_55.../15
+      Request URL: http://192.168.39.110/tcff_php/api/cart/collection.php/{id_movie}_{id_movie}_{id_movie}_.../{id_user}
+       - Request URL: http://192.168.39.110/tcff_php/api/cart/collection.php/33_44_55.../15
       HTTP Verb: DELETE
       JSON Response Format:
         1.刪除成功
@@ -627,7 +609,7 @@
           }
         ]
   -更新收藏(登入後將storage中的collection更新至DB)
-      URL: http://<baseApiUrl>/api/cart/collection.php
+      Request URL: http://192.168.39.110/tcff_php/api/cart/collection.php
       HTTP Verb: PUT
       POST data Format:
       [
@@ -658,7 +640,7 @@
         ]
 
 --劃位
-  URL: http://<baseApiUrl>/api/cart/booking.php/{id_session}
+  Request URL: http://192.168.39.110/tcff_php/api/cart/booking.php/{id_session}
   HTTP Verb: GET
   JSON Response Format:
   [
@@ -685,7 +667,7 @@
 
 
 --結帳
-  URL: http://<baseApiUrl>/api/cart/booking.php
+  Request URL: http://192.168.39.110/tcff_php/api/cart/booking.php
   HTTP Verb: POST
   POST data Format:
     {
@@ -746,6 +728,7 @@
             "quantity":10
         }
       ]
+    "id": "3" (會員id)
     }
   JSON Response Format:
     1.成功購買
@@ -785,7 +768,7 @@
       ]
 
 --場次表
-  URL: http://<baseApiUrl>/api/movie/session.php
+  Request URL: http://192.168.39.110/tcff_php/api/movie/session.php
   HTTP Verb: GET
   JSON Response Format:
   [

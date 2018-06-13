@@ -17,9 +17,10 @@ $result = [
     'success' => true,
 ];
 
+//表格POST
 if(isset($_POST['email'])){
-    // 檢查各欄位值是否符合要求
 
+    // 檢查各欄位值是否符合要求
     if(filter_var($_POST['email'], FILTER_VALIDATE_EMAIL) === false){
         $result['success'] = false;
         $result['message'] = 'email wrong format';
@@ -34,6 +35,7 @@ if(isset($_POST['email'])){
         $result['message'] = 'password wrong format';
     }
 
+    //寫入db
     if($result['success']){
         extract($_POST);
         $member_arr = [
@@ -53,24 +55,26 @@ if(isset($_POST['email'])){
         }    
     }
 
-} else {
+} else { //Request body傳送JSON
     $json = file_get_contents('php://input');
     $obj = json_decode($json, true);
     
+    //檢查各欄位
     if(filter_var($obj['email'], FILTER_VALIDATE_EMAIL) === false){
         $result['success'] = false;
         $result['message'] = 'email wrong format';
     }
 
-    // if(mb_strlen($obj['username'], 'UTF-8')<2){ //mb_strlen第二個參數是編碼
-    //     $result['success'] = false;
-    //     $result['message'] = 'username wrong format';
-    // }
+    if(mb_strlen($obj['username'], 'UTF-8')<2){ //mb_strlen第二個參數是編碼
+        $result['success'] = false;
+        $result['message'] = 'username wrong format';
+    }
     if(strlen($obj['password'])<6){
         $result['success'] = false;
         $result['message'] = 'password wrong format';
     }
 
+    //寫入db
     if($result['success']){
 
         $affected_rows = $members->create($obj);
@@ -83,9 +87,6 @@ if(isset($_POST['email'])){
             $result['message'] = 'unknown bug';
         }    
     }
-    // $result['success'] = true;
-    // $result['success'] = false;
-    // $result['message'] = 'no email';
 }
 
 echo json_encode($result, JSON_UNESCAPED_UNICODE);

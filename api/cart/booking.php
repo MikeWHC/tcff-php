@@ -20,21 +20,8 @@ else:
     // initialize object
     $cart = new Cart($db);
 
-    // if(! isset($_SESSION)){
-    //     session_start();
-    // }
     $result = $cart->booking();
     echo json_encode($result);
 endif;
-
-// $result = $rs->fetch_all(MYSQLI_ASSOC);
-
-// echo var_dump($result);
-// echo print_r($result);
-// echo $result;
-// echo json_encode($result);
-// echo parse_str($result);
-// echo var_dump($result);
-// echo $result;
 
 ?>

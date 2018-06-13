@@ -9,15 +9,16 @@ class Members{
     }
 
     
-    // sign up 
+    //註冊
     public function create($member_arr){ 
-        $sql = "INSERT INTO `members`(`email`, `password`, `created_at`) VALUES (?, ?, NOW())";
+        $sql = "INSERT INTO `members`(`email`, `password`, `username`, `created_at`) VALUES (?, ?, ?, NOW())";
 
         $stmt = $this->conn->prepare($sql);
 
-        $stmt->bind_param('ss',
+        $stmt->bind_param('sss',
             $member_arr['email'],
-            $member_arr['password']
+            $member_arr['password'],
+            $member_arr['username']
         );
         $stmt->execute();
         $affected_rows = $stmt->affected_rows;
@@ -25,7 +26,7 @@ class Members{
         return $affected_rows;
     }
 
-    // log in
+    //登入
     public function login($email, $password){ 
         
         if(!empty($email)){
@@ -40,22 +41,22 @@ class Members{
             
             $result = [];
 
-            if($rs->num_rows==1){
+            if($rs->num_rows==1){ //成功登入
                 $row = $rs->fetch_assoc();
-                // $_SESSION['user'] = $row;
-                // $success = true;
+
                 $result['success'] = true;
                 $result['user'] = $row;
-            }else{
+            }else{ //查不到用戶
                 $result['success'] = false;
             }
             return $result;
-        }else{
+        }else{ //沒給郵件
             $result['success'] = false;
             return $result;
         }
     }
 
+    //更新資料
     public function update(){ 
         if(isset($_POST['password'])){
             $sql = sprintf("SELECT * FROM `members` WHERE `id`=%s AND `password`='%s'",
