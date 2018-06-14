@@ -674,6 +674,7 @@
     "films":[
         {
             "session":1,
+            "id_movie":15,
             "seats":[
                 "10",
                 "11",

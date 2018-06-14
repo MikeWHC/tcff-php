@@ -227,11 +227,13 @@ class Cart{
             //加一部
             if(strpos($id_movie, "_") === false):
 
-                //檢查重複，重複則回傳訊息且跳出
-                foreach($collection as $value){
-                    if($value === $id_movie){
-                        $result['message'] = 'already in your collection';
-                        return $result;
+                if(!empty($collection)){
+                    //檢查重複，重複則回傳訊息且跳出
+                    foreach($collection as $value){
+                        if($value === $id_movie){
+                            $result['message'] = 'already in your collection';
+                            return $result;
+                        }
                     }
                 }
 
@@ -273,12 +275,13 @@ class Cart{
                         return $carry;
                     }
                     $seats = array_reduce($seats,"reduce",[]);
+                    
 
                     $sql = "SELECT m.id AS id_movie, m.name_zhtw, m.name_en, m.release_year, m.cf, 
                             s.id AS id_session, s.day, s.date, s.auditorium, s.time 
                             FROM `movie` m 
                             LEFT JOIN `session` s ON s.id_movie = m.id 
-                            WHERE id_movie=$id_movie";
+                            WHERE m.id=$id_movie";
                     $rs = $this->conn->query($sql);
                     $result['collection_info'] = [];
                     $result['collection_info'] = $rs->fetch_all(MYSQLI_ASSOC);
@@ -534,61 +537,65 @@ class Cart{
 
             //所有欲訂購的場次id
             $id_session_ar = [];
-            foreach ($films as $value) {
-                array_push($id_session_ar, $value['session']);
-            }
-            $id_session = implode(",", $id_session_ar); //逗號分隔
+            if(!empty($films)){
+                foreach ($films as $value) {
+                    array_push($id_session_ar, $value['session']);
+                }
+                $id_session = implode(",", $id_session_ar); //逗號分隔
 
-            //查詢訂位狀況
-            $sql_select = "SELECT o.seat, o.id_session FROM `orders` o WHERE `id_session` IN ($id_session)";
-            $rs = $this->conn->query($sql_select);
+                //查詢訂位狀況
+                $sql_select = "SELECT o.seat, o.id_session FROM `orders` o WHERE `id_session` IN ($id_session)";
+                $rs = $this->conn->query($sql_select);
 
-            //彙整目前訂走的座位
-            $occupied_seats = [];
-            //以場次id為key
-            foreach ($id_session_ar as $key => $value) {
-                $occupied_seats[$value] = [];
-            }
-            while($row = $rs->fetch_assoc()){
-                array_push($occupied_seats[$row['id_session']],$row['seat']);
-            }
+                //彙整目前訂走的座位
+                $occupied_seats = [];
+                //以場次id為key
+                foreach ($id_session_ar as $key => $value) {
+                    $occupied_seats[$value] = [];
+                }
+                while($row = $rs->fetch_assoc()){
+                    array_push($occupied_seats[$row['id_session']],$row['seat']);
+                }
 
-            //統整重複的座位(劃到已經被訂走的)
-            $repeat_seats = [];
-            //以場次id為key
-            foreach ($id_session_ar as $key => $value) {
-                $repeat_seats[$value] = [];
-            }
-            foreach($films as $value){
-                $seats = $value['seats'];
-                $session = $value['session'];
-                foreach($seats as $v){
-                    if(in_array($v, $occupied_seats[$session])){
-                        array_push($repeat_seats[$session],$v);
+                //統整重複的座位(劃到已經被訂走的)
+                $repeat_seats = [];
+                //以場次id為key
+                foreach ($id_session_ar as $key => $value) {
+                    $repeat_seats[$value] = [];
+                }
+                foreach($films as $value){
+                    $seats = $value['seats'];
+                    $session = $value['session'];
+                    foreach($seats as $v){
+                        if(in_array($v, $occupied_seats[$session])){
+                            array_push($repeat_seats[$session],$v);
+                        }
                     }
                 }
+
+                $is_empty = true;
+                //只要任一場次有重複座位
+                foreach ($repeat_seats as $key => $value) {
+                    if(!empty($value)) $is_empty = false;
+                };
+                //清空陣列(key)
+                if($is_empty){
+                    unset($repeat_seats);
+                }
+                $result = [];
+
+                //有重複訂位就回傳訊息和重複的位號加場次，跳出
+                if(!empty($repeat_seats)){
+                    $result["message"] = "seats have been booked";
+                    $result["repeat_seats"] = $repeat_seats;
+                    return $result;
+                }
             }
+            //全都不重複，寫入db
+            $sql_insert = "INSERT INTO `orders`(`cf`, `id_movie`, `quantity`, `id_session`, `seat`, `id_member`, `order_date`) VALUES ";
 
-            $is_empty = true;
-            //只要任一場次有重複座位
-            foreach ($repeat_seats as $key => $value) {
-                if(!empty($value)) $is_empty = false;
-            };
-            //清空陣列(key)
-            if($is_empty){
-                unset($repeat_seats);
-            }
-            $result = [];
-
-            //有重複訂位就回傳訊息和重複的位號加場次，跳出
-            if(!empty($repeat_seats)){
-                $result["message"] = "seats have been booked";
-                $result["repeat_seats"] = $repeat_seats;
-                return $result;
-            }else{ //全都不重複，寫入db
-                $sql_insert = "INSERT INTO `orders`(`cf`, `id_movie`, `quantity`, `id_session`, `seat`, `id_member`, `order_date`) VALUES ";
-
-                //組合字串(VALUE)
+            //組合字串(VALUE)
+            if(!empty($films)){
                 foreach($films as $value){
                     $s = $value['session'];
                     $id_m = $value['id_movie'];
@@ -596,34 +603,38 @@ class Cart{
                         $sql_insert .= "(0,$id_m,1,$s, $v, $id, NOW()),";
                     }
                 }
+            }
+            if(!empty($cffilms)){
                 foreach ($cffilms as $value) {
                     $id_m = $value['id_movie'];
                     $q = $value['quantity'];
                     $sql_insert .= "(1,$id_m,$q,0, 0, $id, NOW()),";
                 }
-                $sql_insert = chop($sql_insert, ',');
-
-                $stmt = $this->conn->prepare($sql_insert);
-
-                if($this->conn->errno){
-                    echo $this->conn->error;
-                    exit;
-                }
-
-                $stmt->execute();
-
-                $affected_rows = $stmt->affected_rows;
-
-                //成功寫入
-                if($affected_rows>0){
-                    $result['message'] = "booking success";
-                }elseif($affected_rows==0){ //寫入失敗
-                    $result['message'] = "something wrong";
-                }
-                return $result;
-                $stmt->close();
-
             }
+            $sql_insert = chop($sql_insert, ',');
+
+            $stmt = $this->conn->prepare($sql_insert);
+
+            if($this->conn->errno){
+                echo $this->conn->error;
+                exit;
+            }
+
+            $stmt->execute();
+
+            $affected_rows = $stmt->affected_rows;
+
+            //成功寫入
+            if($affected_rows>0){
+                $result['message'] = "booking success";
+            }elseif($affected_rows==0){ //寫入失敗
+                $result['message'] = "something wrong";
+            }
+            return $result;
+            $stmt->close();
+
+            
+            
 
         }elseif($_SERVER['REQUEST_METHOD'] === 'GET'){//劃位(單場)查詢座位狀況
             //欲查詢電影的場次id
